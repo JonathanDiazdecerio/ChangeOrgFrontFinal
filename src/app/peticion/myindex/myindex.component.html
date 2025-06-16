@@ -1,0 +1,50 @@
+<div class="container py-5">
+  <h1 class="text-center mb-5 fw-bold text-danger">Lista de Peticiones</h1>
+
+  <div *ngIf="peticiones.length > 0; else noPeticiones">
+    <div class="row g-4">
+      <div *ngFor="let peticion of peticiones" class="col-lg-6 col-md-8 col-sm-12 mx-auto">
+        <div class="card shadow border-0 rounded-4 overflow-hidden">
+          <div class="card-header bg-danger text-white fw-bold fs-5">
+            {{ peticion.titulo }}
+          </div>
+          <div class="card-body">
+            <p class="card-text"><span class="fw-semibold">Descripción:</span> {{ peticion.descripcion }}</p>
+            <p class="card-text"><span class="fw-semibold">Destinatario:</span> {{ peticion.destinatario }}</p>
+            <p class="card-text"><span class="fw-semibold">Estado:</span> 
+              <span class="badge"
+                [ngClass]="{
+                  'bg-success': peticion.estado === 'aceptado',
+                  'bg-warning': peticion.estado === 'pendiente',
+                  'bg-danger': peticion.estado === 'rechazado'
+                }">
+                {{ peticion.estado | titlecase }}
+              </span>
+            </p>
+            <p class="card-text"><span class="fw-semibold">Categoría:</span> {{ peticion.categoria_id }}</p>
+            <p class="card-text"><span class="fw-semibold">Firmantes:</span> {{ peticion.firmantes }}</p>
+
+            <div *ngIf="peticion.file && peticion.file.file_path" class="text-center my-3">
+              <img [src]="'http://127.0.0.1:8000/storage/' + peticion.file.file_path" 
+                   alt="Imagen de la petición" 
+                   class="img-fluid rounded shadow-sm" 
+                   style="max-height: 200px; object-fit: cover;">
+            </div>
+
+            <a [routerLink]="['/petition', peticion.id]" class="btn btn-outline-danger w-100 fw-semibold">
+              Más información
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noPeticiones>
+    <p class="text-center text-muted fs-5 mt-4">No hay peticiones para mostrar.</p>
+  </ng-template>
+
+  <div *ngIf="errors" class="alert alert-danger mt-4 text-center fw-semibold">
+    Error: {{ errors }}
+  </div>
+</div>

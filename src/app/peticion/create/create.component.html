@@ -1,0 +1,83 @@
+<div class="auth-wrapper m-4">
+  <form class="form-signin" [formGroup]="peticionForm" (ngSubmit)="onSubmit()">
+    <h3 class="h3 mb-4 font-weight-bold text-center">Crear Nueva Petición</h3>
+
+    <!-- Título -->
+    <div class="form-group">
+      <label for="titulo" class="form-label">Título</label>
+      <input 
+        type="text" 
+        id="titulo"
+        class="form-control" 
+        formControlName="titulo" 
+        placeholder="Introduce el título de la petición"
+        [ngClass]="{'is-invalid': peticionForm.get('titulo')?.invalid && peticionForm.get('titulo')?.touched}"
+      />
+      <div *ngIf="peticionForm.get('titulo')?.invalid && peticionForm.get('titulo')?.touched" class="invalid-feedback">
+        El título es obligatorio y debe tener al menos 5 caracteres.
+      </div>
+    </div>
+
+    <!-- Descripción -->
+    <div class="form-group">
+      <label for="descripcion" class="form-label">Descripción</label>
+      <textarea 
+        id="descripcion"
+        class="form-control" 
+        formControlName="descripcion" 
+        placeholder="Escribe una breve descripción de la petición"
+        rows="4"
+        [ngClass]="{'is-invalid': peticionForm.get('descripcion')?.invalid && peticionForm.get('descripcion')?.touched}"
+      ></textarea>
+      <div *ngIf="peticionForm.get('descripcion')?.invalid && peticionForm.get('descripcion')?.touched" class="invalid-feedback">
+        La descripción es obligatoria y debe tener al menos 10 caracteres.
+      </div>
+    </div>
+
+    <!-- Destinatario -->
+    <div class="form-group">
+      <label for="destinatario" class="form-label">Destinatario</label>
+      <input 
+        type="text" 
+        id="destinatario"
+        class="form-control" 
+        formControlName="destinatario" 
+        placeholder="Especifica el destinatario"
+        [ngClass]="{'is-invalid': peticionForm.get('destinatario')?.invalid && peticionForm.get('destinatario')?.touched}"
+      />
+      <div *ngIf="peticionForm.get('destinatario')?.invalid && peticionForm.get('destinatario')?.touched" class="invalid-feedback">
+        El destinatario es obligatorio.
+      </div>
+    </div>
+
+   <div class="form-group">
+      <label>Categoría</label>
+      <select formControlName="categoria_id" class="form-select m-2 w-25">
+        <option *ngFor="let categoria of categorias" [value]="categoria.id">
+          {{ categoria.nombre }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Imagen -->
+    <div class="form-group">
+      <label for="file" class="form-label">Imagen</label>
+      <input 
+        type="file" 
+        id="file"
+        class="form-control" 
+        formControlName="file" 
+        (change)="fileUpload($event)" 
+        [ngClass]="{'is-invalid': peticionForm.get('file')?.invalid && peticionForm.get('file')?.touched}"
+      />
+      <div *ngIf="peticionForm.get('file')?.invalid && peticionForm.get('file')?.touched" class="invalid-feedback">
+        La imagen es obligatoria.
+      </div>
+    </div>
+
+    <!-- Botón de envío -->
+    <div class="d-flex justify-content-center mt-3">
+      <button type="submit" class="btn btn-primary" [disabled]="peticionForm.invalid">Crear petición</button>
+    </div>
+  </form>
+</div>

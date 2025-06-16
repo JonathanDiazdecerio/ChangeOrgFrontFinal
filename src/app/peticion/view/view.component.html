@@ -1,0 +1,74 @@
+<div class="container mt-4 my-5">
+
+  <div *ngIf="isLoading" class="d-flex justify-content-center">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && peticion" class="card shadow border-0">
+    <div class="row g-0">
+
+      <div class="col-md-4">
+        <img *ngIf="peticion.file?.file_path"
+             [src]="'http://127.0.0.1:8000/storage/' + peticion.file.file_path"
+             alt="Imagen de la petición"
+             class="img-fluid" />
+      </div>
+
+      <div class="col-md-8">
+        <div class="card-body">
+
+          <h1 class="card-title text-primary mb-4">{{ peticion.titulo }}</h1>
+
+          <p class="card-text"><strong>Descripción:</strong> {{ peticion.descripcion }}</p>
+
+          <p class="card-text"><strong>Destinatario:</strong> {{ peticion.destinatario }}</p>
+
+          <p class="card-text">
+            <strong>Estado:</strong>
+            <span [ngClass]="{
+              'badge bg-success': peticion.estado === 'aceptada',
+              'badge bg-warning': peticion.estado !== 'aceptada'
+            }">
+              {{ peticion.estado | titlecase }}
+            </span>
+          </p>
+
+<p class="card-text"><strong>Usuario ID:</strong> {{ peticion.user_id }}</p>
+
+          <p class="card-text"><strong>Firmas:</strong> {{ peticion.firmantes || 0 }}</p>
+
+          <p class="card-text"><strong>Categoría:</strong> {{ peticion.categoria?.nombre || 'Sin categoría' }}</p>
+
+          <ng-container *ngIf="isSignedIn">
+
+            <button class="btn btn-primary btn-sm ms-2" (click)="onFirmarPeticion(peticion.id)">
+              <i class="bi bi-feather"></i> Firmar
+            </button>
+
+            <ng-container *ngIf="user && (isOwner(peticion.user_id) || user.role_id === 1)">
+              <button class="btn btn-danger btn-sm ms-2" (click)="onDelete(peticion.id)">
+                <i class="bi bi-trash"></i> Eliminar
+              </button>
+            </ng-container>
+
+            <ng-container *ngIf="user && user.role_id === 1">
+              <button class="btn btn-warning btn-sm ms-2" (click)="onEstado(peticion.id)">
+                <i class="bi bi-pencil-square"></i> Cambiar Estado
+              </button>
+            </ng-container>
+
+          </ng-container>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && !peticion" class="alert alert-warning">
+    Petición no encontrada o no disponible.
+  </div>
+
+</div>

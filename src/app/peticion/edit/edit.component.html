@@ -1,0 +1,45 @@
+<div class="auth-wrapper p-4 bg-light rounded shadow-sm" *ngIf="peticion" style="max-width: 600px; margin: 2rem auto;">
+  <form class="form-signin" [formGroup]="peticionForm" (ngSubmit)="onSubmit(peticionForm)" enctype="multipart/form-data" novalidate>
+    <h3 class="text-center mb-4 fw-bold text-primary">Editar Petición</h3>
+
+    <div class="mb-3">
+      <label for="titulo" class="form-label fw-semibold">Título</label>
+      <input id="titulo" type="text" class="form-control" formControlName="titulo" placeholder="Ingrese el título de la petición">
+    </div>
+
+    <div class="mb-3">
+      <label for="descripcion" class="form-label fw-semibold">Descripción</label>
+      <textarea id="descripcion" class="form-control" formControlName="descripcion" rows="3" placeholder="Describa la petición"></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label for="destinatario" class="form-label fw-semibold">Destinatario</label>
+      <input id="destinatario" type="text" class="form-control" formControlName="destinatario" placeholder="¿A quién va dirigida?">
+    </div>
+
+    <div class="mb-4 w-50">
+      <label for="categoria" class="form-label fw-semibold">Categoría</label>
+      <select id="categoria" formControlName="categoria_id" class="form-select">
+        <option *ngFor="let categoria of categorias" [value]="categoria.id">
+          {{ categoria.nombre }}
+        </option>
+      </select>
+    </div>
+
+    <div class="mb-4">
+      <label class="form-label fw-semibold d-block mb-2">Imagen actual</label>
+      <img *ngIf="peticion.file && peticion.file.file_path" 
+           [src]="'http://127.0.0.1:8000/storage/' + peticion.file.file_path" 
+           class="img-thumbnail" 
+           alt="Imagen de la petición" 
+           style="max-height: 180px; object-fit: cover;">
+    </div>
+
+    <div class="mb-4">
+      <label for="file" class="form-label fw-semibold">Cambiar imagen</label>
+      <input id="file" type="file" class="form-control" (change)="onFileChange($event)" accept="image/*">
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100 fw-semibold">Guardar Cambios</button>
+  </form>
+</div>
